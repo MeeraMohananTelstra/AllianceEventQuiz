@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GADIGAL Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
+        h1 { color: #333; }
+        .question { margin-bottom: 20px; }
+        .result { font-size: 24px; font-weight: bold; margin-top: 30px; color: green; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>First Nations & Ada Lovelace Quiz</h1>
+    <form id="quizForm">
+        <div class="question">
+            <p>1. Who is considered the first computer programmer?</p>
+            <input type="radio" name="q1" value="1"> Alan Turing<br>
+            <input type="radio" name="q1" value="0"> Ada Lovelace<br>
+            <input type="radio" name="q1" value="0"> Grace Hopper<br>
+            <div class="binary-reveal" id="binary1"></div>
+        </div>
+        <div class="question">
+            <p>2. Which First Nations group is traditionally associated with Sydney?</p>
+            <input type="radio" name="q2" value="1"> Gadigal<br>
+            <input type="radio" name="q2" value="0"> Wiradjuri<br>
+            <input type="radio" name="q2" value="0"> Noongar<br>
+            <div class="binary-reveal" id="binary2"></div>
+        </div>
+        <div class="question">
+            <p>3. Who collaborated with Ada Lovelace on the Analytical Engine?</p>
+            <input type="radio" name="q3" value="1"> Charles Babbage<br>
+            <input type="radio" name="q3" value="0"> Alan Turing<br>
+            <input type="radio" name="q3" value="0"> Steve Jobs<br>
+            <div class="binary-reveal" id="binary3"></div>
+        </div>
+        <div class="question">
+            <p>4. What is a traditional storytelling practice of First Nations peoples?</p>
+            <input type="radio" name="q4" value="1"> Dreamtime<br>
+            <input type="radio" name="q4" value="0"> Blockchain<br>
+            <input type="radio" name="q4" value="0"> Origami<br>
+            <div class="binary-reveal" id="binary4"></div>
+        </div>
+        <div class="question">
+            <p>5. Ada Lovelace Day celebrates women in which field?</p>
+            <input type="radio" name="q5" value="1"> Computing<br>
+            <input type="radio" name="q5" value="0"> Medicine<br>
+            <input type="radio" name="q5" value="0"> Art<br>
+            <div class="binary-reveal" id="binary5"></div>
+        </div>
+        <div class="question">
+            <p>6. Which of these is a First Nations language group?</p>
+            <input type="radio" name="q6" value="1"> Gadigal<br>
+            <input type="radio" name="q6" value="0"> French<br>
+            <input type="radio" name="q6" value="0"> Latin<br>
+            <div class="binary-reveal" id="binary6"></div>
+        </div>
+        <div class="question">
+            <p>7. Who was Ada Lovelace's father?</p>
+            <input type="radio" name="q7" value="1"> Lord Byron<br>
+            <input type="radio" name="q7" value="0"> Charles Dickens<br>
+            <input type="radio" name="q7" value="0"> Isaac Newton<br>
+            <div class="binary-reveal" id="binary7"></div>
+        </div>
+        <div class="question">
+            <p>8. What is Ada Lovelace best known for?</p>
+            <input type="radio" name="q8" value="1"> First computer algorithm<br>
+            <input type="radio" name="q8" value="0"> Discovering gravity<br>
+            <input type="radio" name="q8" value="0"> Writing poetry<br>
+            <div class="binary-reveal" id="binary8"></div>
+        </div>
+        <button type="button" onclick="calculateResult()">Submit</button>
+    </form>
+    <div class="result" id="result"></div>
+    <div class="result" id="finalBinary" style="font-size:20px; color:#333; margin-top:20px;"></div>
+
+    <script>
+        // Binary reveal data for each question
+        const binaryData = [
+            {letter: 'A', binary: '01000001', answer: 'Ada Lovelace'},
+            {letter: 'L', binary: '01001100', answer: 'Gadigal'},
+            {letter: 'L', binary: '01001100', answer: 'Charles Babbage'},
+            {letter: 'I', binary: '01001001', answer: 'Dreamtime'},
+            {letter: 'A', binary: '01000001', answer: 'Computing'},
+            {letter: 'N', binary: '01001110', answer: 'Gadigal'},
+            {letter: 'C', binary: '01000011', answer: 'Lord Byron'},
+            {letter: 'E', binary: '01000101', answer: 'First computer algorithm'}
+        ];
+
+        function calculateResult() {
+            let form = document.getElementById('quizForm');
+            let allCorrect = true;
+            let answers = [];
+            // Clear previous binary reveals
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById('binary' + i).textContent = '';
+            }
+            document.getElementById('finalBinary').textContent = '';
+
+            for (let i = 1; i <= 8; i++) {
+                let radios = form['q' + i];
+                let value = '';
+                if (radios) {
+                    if (radios.length) {
+                        for (let r of radios) {
+                            if (r.checked) value = r.nextSibling.textContent.trim();
+                        }
+                    } else {
+                        if (radios.checked) value = radios.nextSibling.textContent.trim();
+                    }
+                }
+                answers.push(value);
+                if (value !== binaryData[i-1].answer) {
+                    allCorrect = false;
+                } else {
+                    document.getElementById('binary'+i).textContent = `Correct! The binary for '${binaryData[i-1].letter}' is ${binaryData[i-1].binary}.`;
+                }
+            }
+            let resultDiv = document.getElementById('result');
+            if (allCorrect) {
+                resultDiv.textContent = "🎉 You spelled ALLIANCE!";
+                document.getElementById('finalBinary').innerHTML =
+                    '<b>01000001 01001100 01001100 01001001 01000001 01001110 01000011 01000101</b><br>Which spells: <b>ALLIANCE 🎉</b>';
+            } else {
+                resultDiv.textContent = "❌ Try again to spell ALLIANCE!";
+            }
+        }
+    </script>
+</body>
+</html>
